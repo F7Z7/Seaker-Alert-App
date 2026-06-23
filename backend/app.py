@@ -10,6 +10,8 @@ app=Flask(__name__)
 @app.route('/api/system_data', methods=['GET'])
 def system_data():
     data = get_system_data()
+
+    save_system_data(data)
     return data, 200
 
 def save_system_data(data):
@@ -45,5 +47,10 @@ def save_system_data(data):
         data['uptime']['hours']
     ))
 
+    conn.commit()
+    conn.close()
 
 
+
+if __name__ == "__main__":
+    app.run(debug=True)
