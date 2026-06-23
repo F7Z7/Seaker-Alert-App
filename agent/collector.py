@@ -18,7 +18,6 @@ def get_system_data():
     percentage = memory_info.percent
 
     disk = psutil.disk_usage('/')
-
     disk_total_gb = disk.total / (1024 ** 3)
     disk_used_gb = disk.used / (1024 ** 3)
     disk_free_gb = disk.free / (1024 ** 3)
