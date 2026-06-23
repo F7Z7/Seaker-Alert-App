@@ -1,10 +1,11 @@
-from backend.database import init_db,get_db_connection
-from agent.collector import get_system_data
 from flask import Flask
 
-init_db() #this is for first time creation of tables
+from agent.collector import get_system_data
+from backend.database import init_db, get_db_connection
 
-app=Flask(__name__)
+init_db()  # this is for first time creation of tables
+
+app = Flask(__name__)
 
 
 @app.route('/api/system_data', methods=['GET'])
@@ -14,9 +15,10 @@ def system_data():
     save_system_data(data)
     return data, 200
 
+
 def save_system_data(data):
     conn = get_db_connection()
-    cursor=conn.cursor()
+    cursor = conn.cursor()
     cursor.execute('''INSERT INTO system_data (
         timestamp,
         cpu_usage,
@@ -51,6 +53,40 @@ def save_system_data(data):
     conn.close()
 
 
+@app.route("/api/history", methods=["GET"])
+def get_prevdatas():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # for prev data=>mostly for plotting - last 5 datas
+    cursor.execute('''
+        SELECT *
+FROM system_data
+ORDER BY timestamp DESC
+LIMIT 10
+        ''')
+
+    rows=cursor.fetchall()
+    conn.close()
+
+    return [dict[row] for row in rows]
+
+
+@app.route("/api/latest", methods=["GET"])
+def get_current_data():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    # last entered data for current dashboard
+    cursor.execute('''
+    SELECT * FROM  system_data 
+    ORDER BY TIMESTAMP DESC
+    LIMIT 1
+    
+    ''')
+    row = cursor.fetchone()
+    conn.close()
+
+    return row
 
 if __name__ == "__main__":
     app.run(debug=True)
