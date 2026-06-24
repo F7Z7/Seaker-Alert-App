@@ -7,7 +7,7 @@ def get_system_data():
     timestamp=datetime.now().isoformat()
     boot_time=psutil.boot_time()
     uptime_hours = (time.time() - boot_time) / 3600 #60x60 => seconds to hours
-    cpu_usage = psutil.cpu_percent()
+    cpu_usage = psutil.cpu_percent(interval=None) #collect every 2 s
     cpu_cores = psutil.cpu_count(logical=False)
     cpu_threads = psutil.cpu_count(logical=True)
 
