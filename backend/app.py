@@ -1,3 +1,5 @@
+import time
+
 from flask import Flask,jsonify,render_template
 
 from agent.collector import get_system_data
@@ -12,6 +14,7 @@ def collector():
     while True:
         data = get_system_data()
         save_system_data(data)
+        time.sleep(1)
 
 
 
