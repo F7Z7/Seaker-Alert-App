@@ -94,7 +94,10 @@ window.addEventListener('load', () => {
     setInterval(updateClock, 1000);
 
 
-    async function showRecentlogs() {
+    let logDropdown = document.getElementById("logs")
+    let count=logDropdown.value;
+    showRecentlogs(count);
+    async function showRecentlogs(defaultCount = 10) {
         try {
             const response = await fetch('http://127.0.0.1:5000//api/history');
 
