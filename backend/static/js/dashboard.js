@@ -6,12 +6,12 @@ async function latestData() {
     }
 
     let data=await response.json()
-    console.log(data)
+    console.log(data.timestamp)
 }
 
 async function start() {
     await latestData()
-    setInterval(latestData, 500)
+    setInterval(latestData, 1000)
 }
 
 start()
