@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask,jsonify,render_template
 
 from agent.collector import get_system_data
 from backend.database import init_db, get_db_connection
@@ -8,6 +8,9 @@ init_db()  # this is for first time creation of tables
 app = Flask(__name__)
 
 
+@app.route("/")
+def home():
+    return render_template("index.html")
 @app.route('/api/system_data', methods=['GET'])
 def system_data():
     data = get_system_data()
@@ -69,7 +72,7 @@ LIMIT 10
     rows=cursor.fetchall()
     conn.close()
 
-    return [dict[row] for row in rows]
+    return jsonify([dict(row) for row in rows])
 
 
 @app.route("/api/latest", methods=["GET"])
@@ -86,7 +89,7 @@ def get_current_data():
     row = cursor.fetchone()
     conn.close()
 
-    return row
+    return jsonify(row)
 
 if __name__ == "__main__":
     app.run(debug=True)
