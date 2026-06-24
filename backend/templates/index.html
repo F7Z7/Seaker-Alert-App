@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>System Monitor</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</head>
+<body>
+
+  <header>
+    <h1><span class="status-dot"></span>System Monitor</h1>
+    <div class="header-meta">
+      <div class="meta-item">
+        <span class="meta-label">Date</span>
+        <span class="meta-value" id="hdr-date">—</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Time</span>
+        <span class="meta-value" id="hdr-time">—</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Uptime</span>
+        <span class="meta-value" id="hdr-uptime">—</span>
+      </div>
+      <button class="refresh-btn" onclick="fetchLatest()">refresh</button>
+    </div>
+  </header>
+
+  <div class="error-banner" id="error-banner">Could not reach /api/latest — check that the Flask server is running.</div>
+
+  <div class="grid">
+
+    <!-- CPU -->
+    <div class="card">
+      <div class="card-label">CPU</div>
+      <div class="stat-row">
+        <span class="stat-value" id="cpu-pct">—</span>
+        <span class="stat-unit">%</span>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-fill" id="cpu-bar" style="width:0%"></div>
+      </div>
+      <div class="sub-stats">
+        <div class="sub-row">
+          <span class="sub-key">Cores</span>
+          <span class="sub-val" id="cpu-cores">—</span>
+        </div>
+        <div class="sub-row">
+          <span class="sub-key">Threads</span>
+          <span class="sub-val" id="cpu-threads">—</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Memory -->
+    <div class="card">
+      <div class="card-label">Memory</div>
+      <div class="stat-row">
+        <span class="stat-value" id="mem-pct">—</span>
+        <span class="stat-unit">%</span>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-fill" id="mem-bar" style="width:0%"></div>
+      </div>
+      <div class="sub-stats">
+        <div class="sub-row">
+          <span class="sub-key">Total</span>
+          <span class="sub-val" id="mem-total">—</span>
+        </div>
+        <div class="sub-row">
+          <span class="sub-key">Used</span>
+          <span class="sub-val" id="mem-used">—</span>
+        </div>
+        <div class="sub-row">
+          <span class="sub-key">Available</span>
+          <span class="sub-val" id="mem-avail">—</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Disk -->
+    <div class="card">
+      <div class="card-label">Disk</div>
+      <div class="stat-row">
+        <span class="stat-value" id="disk-pct">—</span>
+        <span class="stat-unit">%</span>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-fill" id="disk-bar" style="width:0%"></div>
+      </div>
+      <div class="sub-stats">
+        <div class="sub-row">
+          <span class="sub-key">Total</span>
+          <span class="sub-val" id="disk-total">—</span>
+        </div>
+        <div class="sub-row">
+          <span class="sub-key">Used</span>
+          <span class="sub-val" id="disk-used">—</span>
+        </div>
+        <div class="sub-row">
+          <span class="sub-key">Free</span>
+          <span class="sub-val" id="disk-free">—</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Log table -->
+  <div class="log-section">
+    <div class="log-header">
+      <span class="log-title">Recent logs</span>
+      <span class="log-count" id="log-count">—</span>
+    </div>
+    <div class="log-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>CPU %</th>
+            <th>Mem %</th>
+            <th>Disk %</th>
+            <th>Mem used (GB)</th>
+            <th>Disk free (GB)</th>
+            <th>Uptime (h)</th>
+          </tr>
+        </thead>
+        <tbody id="log-body">
+          <tr><td colspan="7" class="empty">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</body>
+</html>
