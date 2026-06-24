@@ -4,7 +4,7 @@ import os
 DB_LOCATION = f"C:\\Users\\farza\\PycharmProjects\\Seaker-Alert-App\\data\\system_data.db"
 os.makedirs(os.path.dirname(DB_LOCATION), exist_ok=True)
 def get_db_connection():
-    conn = sqlite3.connect(DB_LOCATION)
+    conn = sqlite3.connect(DB_LOCATION,timeout=10)
     conn.row_factory = sqlite3.Row
     return conn
 
