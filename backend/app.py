@@ -2,21 +2,25 @@ from flask import Flask,jsonify,render_template
 
 from agent.collector import get_system_data
 from backend.database import init_db, get_db_connection
+import threading
 
-init_db()  # this is for first time creation of tables
 
 app = Flask(__name__)
+
+
+def collector():
+    while True:
+        data = get_system_data()
+        save_system_data(data)
+
+        print("Data saved")
 
 
 @app.route("/")
 def home():
     return render_template("index.html")
-@app.route('/api/system_data', methods=['GET'])
-def system_data():
-    data = get_system_data()
+# @app.route('/api/system_data', methods=['GET'])
 
-    save_system_data(data)
-    return data, 200
 
 
 def save_system_data(data):
@@ -95,4 +99,9 @@ def get_current_data():
     return jsonify(dict(row))
 
 if __name__ == "__main__":
+    init_db()  # this is for first time creation of tables
+    t=threading.Thread(target=collector,daemon=True)
+    t.start()
     app.run(debug=True)
+
+
