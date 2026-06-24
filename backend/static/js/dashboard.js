@@ -105,15 +105,29 @@ window.addEventListener('load', () => {
 
             const data = await response.json();
 
-            for(let loge of data) {
-                console.log(loge)
-            }
+           document.getElementById("loading-screen").remove();
+            let row
+            let table = document.getElementById("log-body")
+            data.forEach((item) => {
+                row = `<tr>
+    <td>${item.timestamp}</td>
+    <td>${item.cpu_usage}</td>
+    <td>${item.memory_percentage}</td>
+    <td>${item.disk_percentage}</td>
+    <td>${item.memory_used_gb}</td>
+    <td>${item.disk_free_gb}</td>
+    <td>${item.uptime_hours}</td>
+</tr>`;
+
+                table.innerHTML += row
+
+            })
 
 
-        }
-        catch (error) {
+        } catch (error) {
             console.error("Error fetching latest data:", error);
         }
     }
+
     showRecentlogs()
 })
