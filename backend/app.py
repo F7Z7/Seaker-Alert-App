@@ -89,7 +89,7 @@ def get_current_data():
     row = cursor.fetchone()
     conn.close()
 
-    return jsonify(row)
+    return jsonify(dict(row))
 
 if __name__ == "__main__":
     app.run(debug=True)
