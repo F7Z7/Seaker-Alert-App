@@ -79,6 +79,9 @@ LIMIT 10
 def get_current_data():
     conn = get_db_connection()
     cursor = conn.cursor()
+    #
+    # data=get_system_data()
+    # save_system_data(data)
     # last entered data for current dashboard
     cursor.execute('''
     SELECT * FROM  system_data 
