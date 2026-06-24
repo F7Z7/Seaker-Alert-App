@@ -370,3 +370,29 @@ tbody td {
     66%  { width: 0.8em; }
     100% { width: 1.2em; }
 }
+
+#log-dropdown {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+#log-dropdown label,
+#log-dropdown span {
+    color: #555;
+}
+
+#log-dropdown select {
+    padding: 4px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+}
+
+#log-dropdown select:focus {
+    border-color: #999;
+}

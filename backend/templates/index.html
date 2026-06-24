@@ -1,167 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>System Monitor</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>System Monitor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 </head>
 <body>
 
-  <header>
+<header>
     <h1><span class="status-dot"></span>System Monitor</h1>
     <div class="header-meta">
-      <div class="meta-item">
-        <span class="meta-label">Date</span>
-        <span class="meta-value" id="date">—</span>
-      </div>
-      <div class="meta-item">
-        <span class="meta-label">Time</span>
-        <span class="meta-value" id="time"></span>
-      </div>
-      <div class="meta-item">
-        <span class="meta-label">Uptime</span>
-        <span class="meta-value" id="uptime">—</span>
-      </div>
-      <button class="refresh-btn" onclick="fetchLatest()">refresh</button>
+        <div class="meta-item">
+            <span class="meta-label">Date</span>
+            <span class="meta-value" id="date">—</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Time</span>
+            <span class="meta-value" id="time"></span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Uptime</span>
+            <span class="meta-value" id="uptime">—</span>
+        </div>
+        <button class="refresh-btn" onclick="fetchLatest()">refresh</button>
     </div>
-  </header>
+</header>
 
-  <div class="error-banner" id="error-banner">Could not reach /api/latest — check that the Flask server is running.</div>
+<div class="error-banner" id="error-banner">Could not reach /api/latest — check that the Flask server is running.</div>
 
-  <div class="grid">
+<div class="grid">
 
     <!-- CPU -->
     <div class="card">
-      <div class="card-label">CPU</div>
-      <div class="stat-row">
-        <span class="stat-value" id="cpu-pct">—</span>
-        <span class="stat-unit">%</span>
-      </div>
-      <div class="bar-wrap">
-        <div class="bar-fill" id="cpu-bar" style="width:0%"></div>
-      </div>
-      <div class="sub-stats">
-        <div class="sub-row">
-          <span class="sub-key">Cores</span>
-          <span class="sub-val" id="cpu-cores">—</span>
+        <div class="card-label">CPU</div>
+        <div class="stat-row">
+            <span class="stat-value" id="cpu-pct">—</span>
+            <span class="stat-unit">%</span>
         </div>
-        <div class="sub-row">
-          <span class="sub-key">Threads</span>
-          <span class="sub-val" id="cpu-threads">—</span>
+        <div class="bar-wrap">
+            <div class="bar-fill" id="cpu-bar" style="width:0%"></div>
         </div>
-      </div>
+        <div class="sub-stats">
+            <div class="sub-row">
+                <span class="sub-key">Cores</span>
+                <span class="sub-val" id="cpu-cores">—</span>
+            </div>
+            <div class="sub-row">
+                <span class="sub-key">Threads</span>
+                <span class="sub-val" id="cpu-threads">—</span>
+            </div>
+        </div>
     </div>
 
     <!-- Memory -->
     <div class="card">
-      <div class="card-label">Memory</div>
-      <div class="stat-row">
-        <span class="stat-value" id="mem-pct">—</span>
-        <span class="stat-unit">%</span>
-      </div>
-      <div class="bar-wrap">
-        <div class="bar-fill" id="mem-bar" style="width:0%"></div>
-      </div>
-      <div class="sub-stats">
-        <div class="sub-row">
-          <span class="sub-key">Total</span>
-          <span class="sub-val" id="mem-total">—</span>
+        <div class="card-label">Memory</div>
+        <div class="stat-row">
+            <span class="stat-value" id="mem-pct">—</span>
+            <span class="stat-unit">%</span>
         </div>
-        <div class="sub-row">
-          <span class="sub-key">Used</span>
-          <span class="sub-val" id="mem-used">—</span>
+        <div class="bar-wrap">
+            <div class="bar-fill" id="mem-bar" style="width:0%"></div>
         </div>
-        <div class="sub-row">
-          <span class="sub-key">Available</span>
-          <span class="sub-val" id="mem-avail">—</span>
+        <div class="sub-stats">
+            <div class="sub-row">
+                <span class="sub-key">Total</span>
+                <span class="sub-val" id="mem-total">—</span>
+            </div>
+            <div class="sub-row">
+                <span class="sub-key">Used</span>
+                <span class="sub-val" id="mem-used">—</span>
+            </div>
+            <div class="sub-row">
+                <span class="sub-key">Available</span>
+                <span class="sub-val" id="mem-avail">—</span>
+            </div>
         </div>
-      </div>
     </div>
 
     <!-- Disk -->
     <div class="card">
-      <div class="card-label">Disk</div>
-      <div class="stat-row">
-        <span class="stat-value" id="disk-pct">—</span>
-        <span class="stat-unit">%</span>
-      </div>
-      <div class="bar-wrap">
-        <div class="bar-fill" id="disk-bar" style="width:0%"></div>
-      </div>
-      <div class="sub-stats">
-        <div class="sub-row">
-          <span class="sub-key">Total</span>
-          <span class="sub-val" id="disk-total">—</span>
+        <div class="card-label">Disk</div>
+        <div class="stat-row">
+            <span class="stat-value" id="disk-pct">—</span>
+            <span class="stat-unit">%</span>
         </div>
-        <div class="sub-row">
-          <span class="sub-key">Used</span>
-          <span class="sub-val" id="disk-used">—</span>
+        <div class="bar-wrap">
+            <div class="bar-fill" id="disk-bar" style="width:0%"></div>
         </div>
-        <div class="sub-row">
-          <span class="sub-key">Free</span>
-          <span class="sub-val" id="disk-free">—</span>
+        <div class="sub-stats">
+            <div class="sub-row">
+                <span class="sub-key">Total</span>
+                <span class="sub-val" id="disk-total">—</span>
+            </div>
+            <div class="sub-row">
+                <span class="sub-key">Used</span>
+                <span class="sub-val" id="disk-used">—</span>
+            </div>
+            <div class="sub-row">
+                <span class="sub-key">Free</span>
+                <span class="sub-val" id="disk-free">—</span>
+            </div>
         </div>
-      </div>
     </div>
 
-  </div>
+</div>
 
-  <!-- Log table -->
-  <div class="log-section">
+<!-- Log table -->
+<div class="log-section">
     <div class="log-header">
-      <span class="log-title">Recent logs</span>
-      <span class="log-count" id="log-count">—</span>
+        <span class="log-title">Recent logs</span>
+        <div id="log-dropdown">
+            <label for="logs">Last</label>
+            <select id="logs" name="logs">
+
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+
+            </select>
+            <span>Entries</span>
+        </div>
     </div>
     <div class="log-table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Timestamp</th>
-            <th>CPU %</th>
-            <th>Mem %</th>
-            <th>Disk %</th>
-            <th>Mem used (GB)</th>
-            <th>Disk free (GB)</th>
-            <th>Uptime (h)</th>
-          </tr>
-        </thead>
-        <tbody id="log-body">
-          <tr>
-              <td colspan="7" class="empty" id="loading-screen">
-                  <svg class="loader" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-                      <circle fill="#FFEFED" stroke="#FFEFED" stroke-width="2" r="15" cx="40" cy="65">
-                          <animate attributeName="cy" calcMode="spline" dur="2"
-                                   values="65;135;65;"
-                                   keySplines=".5 0 .5 1;.5 0 .5 1"
-                                   repeatCount="indefinite" begin="-.4"/>
-                      </circle>
+        <table>
+            <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>CPU %</th>
+                <th>Mem %</th>
+                <th>Disk %</th>
+                <th>Mem used (GB)</th>
+                <th>Disk free (GB)</th>
+                <th>Uptime (h)</th>
+            </tr>
+            </thead>
+            <tbody id="log-body">
+            <tr>
+                <td colspan="7" class="empty" id="loading-screen">
+                    <svg class="loader" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+                        <circle fill="#FFEFED" stroke="#FFEFED" stroke-width="2" r="15" cx="40" cy="65">
+                            <animate attributeName="cy" calcMode="spline" dur="2"
+                                     values="65;135;65;"
+                                     keySplines=".5 0 .5 1;.5 0 .5 1"
+                                     repeatCount="indefinite" begin="-.4"/>
+                        </circle>
 
-                      <circle fill="#FFEFED" stroke="#FFEFED" stroke-width="2" r="15" cx="100" cy="65">
-                          <animate attributeName="cy" calcMode="spline" dur="2"
-                                   values="65;135;65;"
-                                   keySplines=".5 0 .5 1;.5 0 .5 1"
-                                   repeatCount="indefinite" begin="-.2"/>
-                      </circle>
+                        <circle fill="#FFEFED" stroke="#FFEFED" stroke-width="2" r="15" cx="100" cy="65">
+                            <animate attributeName="cy" calcMode="spline" dur="2"
+                                     values="65;135;65;"
+                                     keySplines=".5 0 .5 1;.5 0 .5 1"
+                                     repeatCount="indefinite" begin="-.2"/>
+                        </circle>
 
-                      <circle fill="#FFEFED" stroke="#FFEFED" stroke-width="2" r="15" cx="160" cy="65">
-                          <animate attributeName="cy" calcMode="spline" dur="2"
-                                   values="65;135;65;"
-                                   keySplines=".5 0 .5 1;.5 0 .5 1"
-                                   repeatCount="indefinite" begin="0"/>
-                      </circle>
-                  </svg>
+                        <circle fill="#FFEFED" stroke="#FFEFED" stroke-width="2" r="15" cx="160" cy="65">
+                            <animate attributeName="cy" calcMode="spline" dur="2"
+                                     values="65;135;65;"
+                                     keySplines=".5 0 .5 1;.5 0 .5 1"
+                                     repeatCount="indefinite" begin="0"/>
+                        </circle>
+                    </svg>
 
-                <span id="loading-text">Loading<span class="dots"></span></span>
+                    <span id="loading-text">Loading<span class="dots"></span></span>
 
-              </td>
+                </td>
 
-          </tr>
-        </tbody>
-      </table>
+            </tr>
+            </tbody>
+        </table>
     </div>
-  </div>
+</div>
 
 </body>
 </html>
