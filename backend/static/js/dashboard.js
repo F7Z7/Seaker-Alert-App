@@ -1,11 +1,11 @@
 window.addEventListener('load', () => {
 
-    const now=new Date()
-    const today=now.toLocaleDateString()
+    const now = new Date()
+    const today = now.toLocaleDateString()
     document.getElementById("date").innerHTML = today
-    const hrs=now.getHours()
-    const min=now.getMinutes()
-    const sec=now.getSeconds()
+    const hrs = now.getHours()
+    const min = now.getMinutes()
+    const sec = now.getSeconds()
     document.getElementById("time").innerHTML =
         `${hrs}:${min}:${sec}`;
 
@@ -30,7 +30,6 @@ window.addEventListener('load', () => {
                 data.cpu_usage;
 
 
-
             document.getElementById("cpu-bar").style.width =
                 `${data.cpu_usage}%`;
 
@@ -42,7 +41,6 @@ window.addEventListener('load', () => {
             // Memory
             document.getElementById("mem-pct").innerText =
                 data.memory_percentage;
-
 
 
             document.getElementById("mem-total").innerText =
@@ -95,4 +93,27 @@ window.addEventListener('load', () => {
     updateClock();
     setInterval(updateClock, 1000);
 
+
+    async function showRecentlogs() {
+        try {
+            const response = await fetch('http://127.0.0.1:5000//api/history');
+
+            if (!response.ok) {
+                console.log("HTTP Error:", response.status);
+                return;
+            }
+
+            const data = await response.json();
+
+            for(let loge of data) {
+                console.log(loge)
+            }
+
+
+        }
+        catch (error) {
+            console.error("Error fetching latest data:", error);
+        }
+    }
+    showRecentlogs()
 })
