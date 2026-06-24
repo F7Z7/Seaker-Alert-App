@@ -23,11 +23,13 @@ window.addEventListener('load', () => {
 
             // Uptime
             document.getElementById("uptime").innerText =
-                `${data.uptime_hours.toFixed(1)} h`;
+                `${data.uptime_hours} h`;
 
             // CPU
             document.getElementById("cpu-pct").innerText =
-                data.cpu_usage.toFixed(1);
+                data.cpu_usage;
+
+
 
             document.getElementById("cpu-bar").style.width =
                 `${data.cpu_usage}%`;
@@ -37,38 +39,36 @@ window.addEventListener('load', () => {
 
             document.getElementById("cpu-threads").innerText =
                 data.cpu_threads;
-
             // Memory
             document.getElementById("mem-pct").innerText =
-                data.percentage.toFixed(1);
+                data.memory_percentage;
 
-            document.getElementById("mem-bar").style.width =
-                `${data.percentage}%`;
+
 
             document.getElementById("mem-total").innerText =
-                `${data.total_gb.toFixed(1)} GB`;
+                `${data.memory_total_gb} GB`;
 
             document.getElementById("mem-used").innerText =
-                `${data.used_gb.toFixed(1)} GB`;
+                `${data.memory_used_gb} GB`;
 
             document.getElementById("mem-avail").innerText =
-                `${data.available_gb.toFixed(1)} GB`;
+                `${data.memory_available_gb} GB`;
 
             // Disk
             document.getElementById("disk-pct").innerText =
-                data.disk_percent.toFixed(1);
+                data.disk_percentage;
 
             document.getElementById("disk-bar").style.width =
-                `${data.disk_percent}%`;
+                `${data.disk_percentage}%`;
 
             document.getElementById("disk-total").innerText =
-                `${data.disk_total_gb.toFixed(1)} GB`;
+                `${data.disk_total_gb} GB`;
 
             document.getElementById("disk-used").innerText =
-                `${data.disk_used_gb.toFixed(1)} GB`;
+                `${data.disk_used_gb} GB`;
 
             document.getElementById("disk-free").innerText =
-                `${data.disk_free_gb.toFixed(1)} GB`;
+                `${data.disk_free_gb} GB`;
 
         } catch (error) {
             console.error("Error fetching latest data:", error);
