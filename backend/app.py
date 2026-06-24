@@ -13,7 +13,6 @@ def collector():
         data = get_system_data()
         save_system_data(data)
 
-        print("Data saved")
 
 
 @app.route("/")
