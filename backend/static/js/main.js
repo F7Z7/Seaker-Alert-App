@@ -32,6 +32,8 @@ No logs selected
             const data = await response.json();
 
             // Uptime
+            document.getElementById("uptime").innerText =
+                `${data.uptime_hours} h`;
             // CPU
             document.getElementById("cpu-pct").innerText = data.cpu_usage;
             document.getElementById("cpu-cores").innerText = data.cpu_cores;
