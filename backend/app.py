@@ -3,7 +3,7 @@ import time
 from flask import Flask,jsonify,render_template,request
 
 from agent.collector import get_system_data
-from backend.alerts import send_telegram_alert, check_thresholds
+from backend.alerts import check_thresholds
 from backend.database import init_db, get_db_connection
 import threading
 

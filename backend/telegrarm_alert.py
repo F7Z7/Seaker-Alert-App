@@ -1,21 +1,19 @@
-import requests
-from dotenv import load_dotenv
 import os
-from telegram import Bot
-import asyncio
 
-load_dotenv()
+import requests
+from telegram import Bot
+
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
 
-bot=Bot(token=BOT_TOKEN)
+def send_alert(message):
+    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
 
-async def send_alert(message):
-    await bot.send_message(
-        chat_id=CHAT_ID,
-        text=message
+    requests.post(
+        url,
+        json={
+            "chat_id": CHAT_ID,
+            "text": message
+        }
     )
-
-def send_telegram_alert(message):
-    asyncio.run(send_alert(message))

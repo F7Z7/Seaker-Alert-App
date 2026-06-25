@@ -7,6 +7,7 @@ def load_threshold():
     conn=get_db_connection()
     cursor=conn.cursor()
 
-    data = conn.execute('SELECT * FROM thresholds').fetchall()
+    data = conn.execute('SELECT * FROM thresholds').fetchone()
+    conn.close()
 
-    return islice(data.items(), 1, 4)
+    return data["cpu"], data["memory"], data["disk"]

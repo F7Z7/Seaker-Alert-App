@@ -1,5 +1,5 @@
 from backend.thresholds import load_threshold
-from backend.telegrarm_alert import send_telegram_alert
+from backend.telegrarm_alert import  send_alert
 
 last_alert = {
     "cpu": False,
@@ -16,7 +16,7 @@ def check_thresholds(data):
 
     if cpu > cpu_t:
         if not last_alert["cpu"]:
-            send_telegram_alert(
+            send_alert(
                 f" CPU usage exceeded threshold\nCurrent: {cpu}%\nThreshold: {cpu_t}%"
             )
             last_alert["cpu"] = True
@@ -25,7 +25,7 @@ def check_thresholds(data):
 
     if mem > mem_t:
         if not last_alert["memory"]:
-            send_telegram_alert(
+            send_alert(
                 f" Memory usage exceeded threshold\nCurrent: {mem}%\nThreshold: {mem_t}%"
             )
             last_alert["memory"] = True
@@ -34,7 +34,7 @@ def check_thresholds(data):
 
     if disk > disk_t:
         if not last_alert["disk"]:
-            send_telegram_alert(
+            send_alert(
                 f" Disk usage exceeded threshold\nCurrent: {disk}%\nThreshold: {disk_t}%"
             )
             last_alert["disk"] = True
