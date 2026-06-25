@@ -246,14 +246,14 @@ No logs selected
                         data: memoryData,
                         borderColor: 'rgba(255, 99, 132, 1)',
                         backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        fill: true,
+                        fill: false,
                         tension: 0.4
                     }
                 ]
             },
             options: {
                 responsive: true,
-                animation: false
+                animation: true
             }
         });
     }
