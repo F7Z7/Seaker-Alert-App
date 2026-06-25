@@ -8,6 +8,16 @@ window.addEventListener('load', () => {
     const sec = now.getSeconds()
     document.getElementById("time").innerHTML =
         `${hrs}:${min}:${sec}`;
+    let logDropdown = document.getElementById("logs")
+    if (logDropdown.value === "0") {
+        document.getElementById("log-body").innerHTML = `
+<tr>
+<td colspan="7" class="empty">
+No logs selected
+</td>
+</tr>
+`;
+    }
 
 
     async function latestData() {
@@ -94,12 +104,54 @@ window.addEventListener('load', () => {
     setInterval(updateClock, 1000);
 
 
-    let logDropdown = document.getElementById("logs")
-    let count=logDropdown.value;
-    showRecentlogs(count);
+    logDropdown.addEventListener("change", () => {
+        let count = logDropdown.value
+        document.getElementById("log-body").innerHTML = "";
+        let loadingScreen=`<tr>
+                <td colspan="7" class="empty" id="loading-screen">
+                    <svg class="loader" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+                        <circle fill="#FFEFED" stroke="#FFEFED" stroke-width="2" r="15" cx="40" cy="65">
+                            <animate attributeName="cy" calcMode="spline" dur="2"
+                                     values="65;135;65;"
+                                     keySplines=".5 0 .5 1;.5 0 .5 1"
+                                     repeatCount="indefinite" begin="-.4"/>
+                        </circle>
+
+                        <circle fill="#FFEFED" stroke="#FFEFED" stroke-width="2" r="15" cx="100" cy="65">
+                            <animate attributeName="cy" calcMode="spline" dur="2"
+                                     values="65;135;65;"
+                                     keySplines=".5 0 .5 1;.5 0 .5 1"
+                                     repeatCount="indefinite" begin="-.2"/>
+                        </circle>
+
+                        <circle fill="#FFEFED" stroke="#FFEFED" stroke-width="2" r="15" cx="160" cy="65">
+                            <animate attributeName="cy" calcMode="spline" dur="2"
+                                     values="65;135;65;"
+                                     keySplines=".5 0 .5 1;.5 0 .5 1"
+                                     repeatCount="indefinite" begin="0"/>
+                        </circle>
+                    </svg>
+
+                    <span id="loading-text">Loading<span class="dots"></span></span>
+
+                </td>
+
+            </tr>`
+        document.getElementById('log-body').innerHTML = loadingScreen
+
+        showRecentlogs(count);
+    })
+
     async function showRecentlogs(defaultCount = 10) {
         try {
-            const response = await fetch('http://127.0.0.1:5000//api/history');
+            const response = await fetch('http://127.0.0.1:5000//api/history', {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({count: defaultCount})
+            });
+            console.log(defaultCount)
 
             if (!response.ok) {
                 console.log("HTTP Error:", response.status);
@@ -108,7 +160,7 @@ window.addEventListener('load', () => {
 
             const data = await response.json();
 
-           document.getElementById("loading-screen").remove();
+            document.getElementById("loading-screen").remove();
             let row
             let table = document.getElementById("log-body")
             data.forEach((item) => {
@@ -132,5 +184,5 @@ window.addEventListener('load', () => {
         }
     }
 
-    showRecentlogs()
+    // showRecentlogs() no more needed
 })

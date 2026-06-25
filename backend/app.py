@@ -1,6 +1,6 @@
 import time
 
-from flask import Flask,jsonify,render_template
+from flask import Flask,jsonify,render_template,request
 
 from agent.collector import get_system_data
 from backend.database import init_db, get_db_connection
@@ -62,25 +62,34 @@ def save_system_data(data):
     conn.close()
 
 
-@app.route("/api/history", methods=["GET"])
+@app.route("/api/history", methods=["POST"])
 def get_prevdatas():
+    data = request.get_json()
+
+    limit = int(data.get("count", 10))
+
+    print("limit =", limit)
+
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    # for prev data=>mostly for plotting - last 5 datas
-    cursor.execute('''
-        SELECT *
-FROM system_data
-ORDER BY timestamp DESC
-LIMIT 10
-        ''')
+    query = """
+    SELECT *
+    FROM system_data
+    ORDER BY timestamp DESC
+    LIMIT ?
+    """
 
-    rows=cursor.fetchall()
+    print("QUERY:")
+    print(query)
+
+    cursor.execute(query, (limit,))
+
+    rows = cursor.fetchall()
+
     conn.close()
 
     return jsonify([dict(row) for row in rows])
-
-
 @app.route("/api/latest", methods=["GET"])
 def get_current_data():
     conn = get_db_connection()
