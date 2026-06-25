@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>System Monitor</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<!--    <script src="{{ url_for('static', filename='js/.js') }}"></script>-->
 </head>
 <body>
 
@@ -18,7 +19,7 @@
         </div>
         <div class="meta-item">
             <span class="meta-label">Time</span>
-            <span class="meta-value" id="time"></span>
+            <span class="meta-value" id="time">—</span>
         </div>
         <div class="meta-item">
             <span class="meta-label">Uptime</span>
@@ -28,7 +29,9 @@
     </div>
 </header>
 
-<div class="error-banner" id="error-banner">Could not reach /api/latest — check that the Flask server is running.</div>
+<div class="error-banner" id="error-banner">
+    Could not reach /api/latest — check that the Flask server is running.
+</div>
 
 <div class="grid">
 
@@ -36,11 +39,11 @@
     <div class="card">
         <div class="card-label">CPU</div>
         <div class="stat-row">
-            <span class="stat-value" id="cpu-pct">—</span>
+            <span class="stat-value color-green" id="cpu-pct">—</span>
             <span class="stat-unit">%</span>
         </div>
         <div class="bar-wrap">
-            <div class="bar-fill" id="cpu-bar" style="width:0%"></div>
+            <div class="bar-fill fill-green" id="cpu-bar" style="width:0%"></div>
         </div>
         <div class="sub-stats">
             <div class="sub-row">
@@ -58,11 +61,11 @@
     <div class="card">
         <div class="card-label">Memory</div>
         <div class="stat-row">
-            <span class="stat-value" id="mem-pct">—</span>
+            <span class="stat-value color-green" id="mem-pct">—</span>
             <span class="stat-unit">%</span>
         </div>
         <div class="bar-wrap">
-            <div class="bar-fill" id="mem-bar" style="width:0%"></div>
+            <div class="bar-fill fill-green" id="mem-bar" style="width:0%"></div>
         </div>
         <div class="sub-stats">
             <div class="sub-row">
@@ -84,11 +87,11 @@
     <div class="card">
         <div class="card-label">Disk</div>
         <div class="stat-row">
-            <span class="stat-value" id="disk-pct">—</span>
+            <span class="stat-value color-green" id="disk-pct">—</span>
             <span class="stat-unit">%</span>
         </div>
         <div class="bar-wrap">
-            <div class="bar-fill" id="disk-bar" style="width:0%"></div>
+            <div class="bar-fill fill-green" id="disk-bar" style="width:0%"></div>
         </div>
         <div class="sub-stats">
             <div class="sub-row">
@@ -108,6 +111,19 @@
 
 </div>
 
+<!-- Color legend -->
+<div class="legend">
+    <div class="legend-item">
+        <span class="legend-dot green"></span>Normal (&lt;70%)
+    </div>
+    <div class="legend-item">
+        <span class="legend-dot yellow"></span>Warning (70–89%)
+    </div>
+    <div class="legend-item">
+        <span class="legend-dot red"></span>Critical (≥90%)
+    </div>
+</div>
+
 <!-- Log table -->
 <div class="log-section">
     <div class="log-header">
@@ -120,9 +136,8 @@
                 <option value="15">15</option>
                 <option value="20">20</option>
                 <option value="25">25</option>
-
             </select>
-            <span>Entries</span>
+            <span>entries</span>
         </div>
     </div>
     <div class="log-table-wrap">
@@ -138,9 +153,7 @@
                 <th>Uptime (h)</th>
             </tr>
             </thead>
-            <tbody id="log-body">
-
-            </tbody>
+            <tbody id="log-body"></tbody>
         </table>
     </div>
 </div>

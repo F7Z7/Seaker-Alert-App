@@ -32,26 +32,20 @@ No logs selected
             const data = await response.json();
 
             // Uptime
-            document.getElementById("uptime").innerText =
-                `${data.uptime_hours} h`;
-
             // CPU
-            document.getElementById("cpu-pct").innerText =
-                data.cpu_usage;
+            document.getElementById("cpu-pct").innerText = data.cpu_usage;
+            document.getElementById("cpu-cores").innerText = data.cpu_cores;
+            document.getElementById("cpu-threads").innerText = data.cpu_threads;
 
+            applyColor(
+                document.getElementById("cpu-pct"),
+                document.getElementById("cpu-bar"),
+                data.cpu_usage
+            );
 
-            document.getElementById("cpu-bar").style.width =
-                `${data.cpu_usage}%`;
-
-            document.getElementById("cpu-cores").innerText =
-                data.cpu_cores;
-
-            document.getElementById("cpu-threads").innerText =
-                data.cpu_threads;
-            // Memory
+// Memory
             document.getElementById("mem-pct").innerText =
                 data.memory_percentage;
-
 
             document.getElementById("mem-total").innerText =
                 `${data.memory_total_gb} GB`;
@@ -62,12 +56,15 @@ No logs selected
             document.getElementById("mem-avail").innerText =
                 `${data.memory_available_gb} GB`;
 
-            // Disk
+            applyColor(
+                document.getElementById("mem-pct"),
+                document.getElementById("mem-bar"),
+                data.memory_percentage
+            );
+
+// Disk
             document.getElementById("disk-pct").innerText =
                 data.disk_percentage;
-
-            document.getElementById("disk-bar").style.width =
-                `${data.disk_percentage}%`;
 
             document.getElementById("disk-total").innerText =
                 `${data.disk_total_gb} GB`;
@@ -77,6 +74,12 @@ No logs selected
 
             document.getElementById("disk-free").innerText =
                 `${data.disk_free_gb} GB`;
+
+            applyColor(
+                document.getElementById("disk-pct"),
+                document.getElementById("disk-bar"),
+                data.disk_percentage
+            );
 
         } catch (error) {
             console.error("Error fetching latest data:", error);
@@ -196,3 +199,57 @@ No logs selected
 
     // showRecentlogs() no more needed
 })
+// Returns 'green', 'yellow', or 'red' based on threshold
+function colorClass(pct) {
+    if (pct >= 90) return 'red';
+    if (pct >= 70) return 'yellow';
+    return 'green';
+}
+
+// Apply color to a stat value element and its bar fill
+function applyColor(valueEl, barEl, pct) {
+    const cls = colorClass(Number(pct));
+
+    valueEl.classList.remove(
+        'color-green',
+        'color-yellow',
+        'color-red'
+    );
+
+    barEl.classList.remove(
+        'fill-green',
+        'fill-yellow',
+        'fill-red'
+    );
+
+    valueEl.classList.add(`color-${cls}`);
+    barEl.classList.add(`fill-${cls}`);
+
+    barEl.style.width = `${pct}%`;
+}
+
+function fmt(val, unit) {
+    return val !== undefined ? val + (unit || '') : '—';
+}
+
+function fmtGB(bytes) {
+    if (bytes === undefined || bytes === null) return '—';
+    return (bytes / 1073741824).toFixed(1) + ' GB';
+}
+
+function fmtUptime(seconds) {
+    if (!seconds) return '—';
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    return h + 'h ' + m + 'm';
+}
+
+function fmtUptimeH(seconds) {
+    return seconds ? (seconds / 3600).toFixed(1) : '—';
+}
+
+function badgeHTML(pct) {
+    if (pct === undefined || pct === null) return '—';
+    const cls = colorClass(Math.round(pct));
+    return '<span class="badge ' + cls + '">' + Math.round(pct) + '</span>';
+}
