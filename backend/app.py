@@ -157,6 +157,29 @@ def save_thresholds():
         "message": "Thresholds updated"
     })
 
+@app.route("/api/chart-data")
+def chart_data():
+    conn=get_db_connection()
+    cursor=conn.cursor()
+    cursor.execute('''
+    SELECT timestamp,cpu_usage 
+    FROM system_data
+    ORDER BY timestamp DESC
+    LIMIT 30
+    ''')
+
+    rows=cursor.fetchall()
+    conn.close()
+
+    rows=list(reversed(rows))
+
+    return jsonify([
+        {
+            "timestamp": row["timestamp"],
+            "cpu_usage": row["cpu_usage"]
+        }
+        for row in rows
+    ])
 
 
 if __name__ == "__main__":

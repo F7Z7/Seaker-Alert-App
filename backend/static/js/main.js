@@ -1,3 +1,7 @@
+// import {Chart} from "chart.js";
+
+// import {Chart} from "chart.js";
+
 window.addEventListener('load', () => {
 
     const now = new Date()
@@ -6,8 +10,7 @@ window.addEventListener('load', () => {
     const hrs = now.getHours()
     const min = now.getMinutes()
     const sec = now.getSeconds()
-    document.getElementById("time").innerHTML =
-        `${hrs}:${min}:${sec}`;
+    document.getElementById("time").innerHTML = `${hrs}:${min}:${sec}`;
     let logDropdown = document.getElementById("logs")
     if (logDropdown.value === "0") {
         document.getElementById("log-body").innerHTML = `
@@ -32,56 +35,35 @@ No logs selected
             const data = await response.json();
 
             // Uptime
-            document.getElementById("uptime").innerText =
-                `${data.uptime_hours} h`;
+            document.getElementById("uptime").innerText = `${data.uptime_hours} h`;
             // CPU
             document.getElementById("cpu-pct").innerText = data.cpu_usage;
             document.getElementById("cpu-cores").innerText = data.cpu_cores;
             document.getElementById("cpu-threads").innerText = data.cpu_threads;
 
-            applyColor(
-                document.getElementById("cpu-pct"),
-                document.getElementById("cpu-bar"),
-                data.cpu_usage
-            );
+            applyColor(document.getElementById("cpu-pct"), document.getElementById("cpu-bar"), data.cpu_usage);
 
 // Memory
-            document.getElementById("mem-pct").innerText =
-                data.memory_percentage;
+            document.getElementById("mem-pct").innerText = data.memory_percentage;
 
-            document.getElementById("mem-total").innerText =
-                `${data.memory_total_gb} GB`;
+            document.getElementById("mem-total").innerText = `${data.memory_total_gb} GB`;
 
-            document.getElementById("mem-used").innerText =
-                `${data.memory_used_gb} GB`;
+            document.getElementById("mem-used").innerText = `${data.memory_used_gb} GB`;
 
-            document.getElementById("mem-avail").innerText =
-                `${data.memory_available_gb} GB`;
+            document.getElementById("mem-avail").innerText = `${data.memory_available_gb} GB`;
 
-            applyColor(
-                document.getElementById("mem-pct"),
-                document.getElementById("mem-bar"),
-                data.memory_percentage
-            );
+            applyColor(document.getElementById("mem-pct"), document.getElementById("mem-bar"), data.memory_percentage);
 
 // Disk
-            document.getElementById("disk-pct").innerText =
-                data.disk_percentage;
+            document.getElementById("disk-pct").innerText = data.disk_percentage;
 
-            document.getElementById("disk-total").innerText =
-                `${data.disk_total_gb} GB`;
+            document.getElementById("disk-total").innerText = `${data.disk_total_gb} GB`;
 
-            document.getElementById("disk-used").innerText =
-                `${data.disk_used_gb} GB`;
+            document.getElementById("disk-used").innerText = `${data.disk_used_gb} GB`;
 
-            document.getElementById("disk-free").innerText =
-                `${data.disk_free_gb} GB`;
+            document.getElementById("disk-free").innerText = `${data.disk_free_gb} GB`;
 
-            applyColor(
-                document.getElementById("disk-pct"),
-                document.getElementById("disk-bar"),
-                data.disk_percentage
-            );
+            applyColor(document.getElementById("disk-pct"), document.getElementById("disk-bar"), data.disk_percentage);
 
         } catch (error) {
             console.error("Error fetching latest data:", error);
@@ -92,19 +74,18 @@ No logs selected
         await latestData()
         setInterval(latestData, 1000)
     }
+
     start()
-    document.getElementsByClassName("refresh-btn")[0].addEventListener("click", ()=>{
-      latestData()
+    document.getElementsByClassName("refresh-btn")[0].addEventListener("click", () => {
+        latestData()
     })
 
     function updateClock() {
         const now = new Date();
 
-        document.getElementById("date").innerText =
-            now.toLocaleDateString();
+        document.getElementById("date").innerText = now.toLocaleDateString();
 
-        document.getElementById("time").innerText =
-            now.toLocaleTimeString();
+        document.getElementById("time").innerText = now.toLocaleTimeString();
     }
 
     updateClock();
@@ -162,11 +143,9 @@ No logs selected
     async function showRecentlogs(defaultCount = 10) {
         try {
             const response = await fetch('http://127.0.0.1:5000/api/history', {
-                method: "POST",
-                headers: {
+                method: "POST", headers: {
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({count: defaultCount})
+                }, body: JSON.stringify({count: defaultCount})
             });
             console.log(defaultCount)
 
@@ -204,39 +183,32 @@ No logs selected
     // showRecentlogs() no more needed
 
     async function setThresholds() {
-        const response =
-            await fetch("http://127.0.0.1:5000/api/thresholds");
+        const response = await fetch("http://127.0.0.1:5000/api/thresholds");
 
-        const data =
-            await response.json();
+        const data = await response.json();
 
-        document.getElementById("cpu-threshold").value =
-            data.cpu;
+        document.getElementById("cpu-threshold").value = data.cpu;
 
-        document.getElementById("memory-threshold").value =
-            data.memory;
+        document.getElementById("memory-threshold").value = data.memory;
 
-        document.getElementById("disk-threshold").value =
-            data.disk;
+        document.getElementById("disk-threshold").value = data.disk;
     }
 
     setThresholds();
 
-    document.getElementById("save-threshold-btn").addEventListener("click",saveThresholds)
+    document.getElementById("save-threshold-btn").addEventListener("click", saveThresholds)
 
     async function saveThresholds() {
         const cpuThreshold = document.getElementById("cpu-threshold").value;
         const memoryThreshold = document.getElementById("memory-threshold").value;
         const diskThreshold = document.getElementById("disk-threshold").value;
 
-        const response = await fetch("http://127.0.0.1:5000/api/thresholds",{
-            method: "POST",
-            headers: {
+        const response = await fetch("http://127.0.0.1:5000/api/thresholds", {
+            method: "POST", headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ cpu:cpuThreshold,
-                memory:memoryThreshold,
-                disk:diskThreshold})
+            }, body: JSON.stringify({
+                cpu: cpuThreshold, memory: memoryThreshold, disk: diskThreshold
+            })
         })
         const responseData = await response.json();
         console.log(responseData)
@@ -244,6 +216,48 @@ No logs selected
         alert("Thresholds saved successfully")
     }
 
+    let cpuChart;
+
+    async function renderCpuChart() {
+        const response = await fetch("http://127.0.0.1:5000/api/chart-data");
+        const data = await response.json();
+
+        const labels = data.map(item => item.timestamp.slice(11, 19));
+        const cpuData = data.map(item => item.cpu_usage);
+
+        const ctx = document.getElementById("cpuChart").getContext("2d");
+
+        cpuChart = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels,
+                datasets: [{
+                    label: "CPU Usage (%)",
+                    data: cpuData,
+                    borderColor: "rgba(75,192,192,1)",
+                    backgroundColor: "rgba(75,192,192,0.2)",
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                animation: false
+            }
+        });
+    }
+
+    async function updateCpuChart() {
+        const response = await fetch("http://127.0.0.1:5000/api/chart-data");
+        const data = await response.json();
+
+        cpuChart.data.labels = data.map(item => item.timestamp.slice(11, 19));
+        cpuChart.data.datasets[0].data = data.map(item => item.cpu_usage);
+        cpuChart.update();
+    }
+
+    renderCpuChart();
+    setInterval(updateCpuChart, 5000);
 
 })
 
@@ -258,17 +272,9 @@ function colorClass(pct) {
 function applyColor(valueEl, barEl, pct) {
     const cls = colorClass(Number(pct));
 
-    valueEl.classList.remove(
-        'color-green',
-        'color-yellow',
-        'color-red'
-    );
+    valueEl.classList.remove('color-green', 'color-yellow', 'color-red');
 
-    barEl.classList.remove(
-        'fill-green',
-        'fill-yellow',
-        'fill-red'
-    );
+    barEl.classList.remove('fill-green', 'fill-yellow', 'fill-red');
 
     valueEl.classList.add(`color-${cls}`);
     barEl.classList.add(`fill-${cls}`);
