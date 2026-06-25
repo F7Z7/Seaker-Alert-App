@@ -3,6 +3,7 @@ import time
 from flask import Flask,jsonify,render_template,request
 
 from agent.collector import get_system_data
+from backend.alerts import send_telegram_alert, check_thresholds
 from backend.database import init_db, get_db_connection
 import threading
 
@@ -14,6 +15,7 @@ def collector():
     while True:
         data = get_system_data()
         save_system_data(data)
+        check_thresholds(data)
         time.sleep(1)
 
 
@@ -154,6 +156,8 @@ def save_thresholds():
     return jsonify({
         "message": "Thresholds updated"
     })
+
+
 
 if __name__ == "__main__":
     init_db()  # this is for first time creation of tables
