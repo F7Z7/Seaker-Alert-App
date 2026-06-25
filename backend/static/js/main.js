@@ -224,9 +224,9 @@ No logs selected
 
         const labels = data.map(item => item.timestamp.slice(11, 19));
         const cpuData = data.map(item => item.cpu_usage);
-        console.log(`cpuData: ${cpuData}`)
+        // console.log(`cpuData: ${cpuData}`)
         const memoryData = data.map(item => item.memory_usage);
-        console.log(`memoryData: ${memoryData}`)
+        // console.log(`memoryData: ${memoryData}`)
         const ctx = document.getElementById("cpuChart").getContext("2d");
 
         cpuChart = new Chart(ctx, {
