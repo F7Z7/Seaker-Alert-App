@@ -6,7 +6,7 @@
     <title>System Monitor</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-<!--    <script src="{{ url_for('static', filename='js/.js') }}"></script>-->
+    <!--    <script src="{{ url_for('static', filename='js/.js') }}"></script>-->
 </head>
 <body>
 
@@ -112,18 +112,55 @@
 </div>
 
 <!-- Color legend -->
-<div class="legend">
-    <div class="legend-item">
-        <span class="legend-dot green"></span>Normal (&lt;70%)
-    </div>
-    <div class="legend-item">
-        <span class="legend-dot yellow"></span>Warning (70–89%)
-    </div>
-    <div class="legend-item">
-        <span class="legend-dot red"></span>Critical (≥90%)
-    </div>
-</div>
+<div class="settings-section">
 
+    <div class="legend-panel">
+        <h3>Status Levels</h3>
+
+        <div class="legend-item">
+            <span class="legend-dot green"></span>
+            <span>Normal (&lt;70%)</span>
+        </div>
+
+        <div class="legend-item">
+            <span class="legend-dot yellow"></span>
+            <span>Warning (70–89%)</span>
+        </div>
+
+        <div class="legend-item">
+            <span class="legend-dot red"></span>
+            <span>Critical (≥90%)</span>
+        </div>
+    </div>
+
+    <div class="threshold-panel">
+        <h3>Alert Thresholds</h3>
+
+        <div class="threshold-inputs">
+
+            <div class="input-group">
+                <label for="cpu-threshold">CPU</label>
+                <input type="number" id="cpu-threshold" min="0" max="100" value="80">
+            </div>
+
+            <div class="input-group">
+                <label for="memory-threshold">Memory</label>
+                <input type="number" id="memory-threshold" min="0" max="100" value="80">
+            </div>
+
+            <div class="input-group">
+                <label for="disk-threshold">Disk</label>
+                <input type="number" id="disk-threshold" min="0" max="100" value="90">
+            </div>
+
+        </div>
+
+        <button id="save-threshold-btn">
+            Save Thresholds
+        </button>
+    </div>
+
+</div>
 <!-- Log table -->
 <div class="log-section">
     <div class="log-header">
