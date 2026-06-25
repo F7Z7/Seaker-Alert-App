@@ -106,8 +106,18 @@ No logs selected
 
     logDropdown.addEventListener("change", () => {
         let count = logDropdown.value
+        if (count === "0") {
+            document.getElementById("log-body").innerHTML = `
+<tr>
+<td colspan="7" class="empty">
+No logs selected
+</td>
+</tr>
+`;
+            return;
+        }
         document.getElementById("log-body").innerHTML = "";
-        let loadingScreen=`<tr>
+        let loadingScreen = `<tr>
                 <td colspan="7" class="empty" id="loading-screen">
                     <svg class="loader" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
                         <circle fill="#FFEFED" stroke="#FFEFED" stroke-width="2" r="15" cx="40" cy="65">
