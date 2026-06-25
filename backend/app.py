@@ -109,6 +109,52 @@ def get_current_data():
 
     return jsonify(dict(row))
 
+@app.route("/api/thresholds", methods=["GET"])
+def get_thresholds():
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT *
+        FROM thresholds
+        LIMIT 1
+    """)
+
+    row = cursor.fetchone()
+
+    conn.close()
+
+    return jsonify(dict(row))
+
+@app.route("/api/thresholds", methods=["POST"])
+def save_thresholds():
+
+    data = request.get_json()
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        UPDATE thresholds
+        SET cpu=?,
+            memory=?,
+            disk=?
+        WHERE id=1
+    """,
+    (
+        data["cpu"],
+        data["memory"],
+        data["disk"]
+    ))
+
+    conn.commit()
+    conn.close()
+
+    return jsonify({
+        "message": "Thresholds updated"
+    })
+
 if __name__ == "__main__":
     init_db()  # this is for first time creation of tables
     t=threading.Thread(target=collector,daemon=True)

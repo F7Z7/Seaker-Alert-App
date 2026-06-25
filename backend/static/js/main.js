@@ -22,7 +22,7 @@ No logs selected
 
     async function latestData() {
         try {
-            const response = await fetch('http://127.0.0.1:5000//api/latest');
+            const response = await fetch('http://127.0.0.1:5000/api/latest');
 
             if (!response.ok) {
                 console.log("HTTP Error:", response.status);
@@ -159,7 +159,7 @@ No logs selected
 
     async function showRecentlogs(defaultCount = 10) {
         try {
-            const response = await fetch('http://127.0.0.1:5000//api/history', {
+            const response = await fetch('http://127.0.0.1:5000/api/history', {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -200,7 +200,49 @@ No logs selected
     }
 
     // showRecentlogs() no more needed
+
+    async function setThresholds() {
+        const response =
+            await fetch("http://127.0.0.1:5000/api/thresholds");
+
+        const data =
+            await response.json();
+
+        document.getElementById("cpu-threshold").value =
+            data.cpu;
+
+        document.getElementById("memory-threshold").value =
+            data.memory;
+
+        document.getElementById("disk-threshold").value =
+            data.disk;
+    }
+
+    setThresholds();
+
+    document.getElementById("save-threshold-btn").addEventListener("click",saveThresholds)
+
+    async function saveThresholds() {
+        const cpuThreshold = document.getElementById("cpu-threshold").value;
+        const memoryThreshold = document.getElementById("memory-threshold").value;
+        const diskThreshold = document.getElementById("disk-threshold").value;
+
+        const response = await fetch("http://127.0.0.1:5000/api/thresholds",{
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ cpu:cpuThreshold,
+                memory:memoryThreshold,
+                disk:diskThreshold})
+        })
+        const responseData = await response.json();
+        console.log(responseData)
+
+        alert("Thresholds saved successfully")
+    }
 })
+
 // Returns 'green', 'yellow', or 'red' based on threshold
 function colorClass(pct) {
     if (pct >= 90) return 'red';
