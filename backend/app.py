@@ -162,7 +162,7 @@ def chart_data():
     conn=get_db_connection()
     cursor=conn.cursor()
     cursor.execute('''
-    SELECT timestamp,cpu_usage 
+    SELECT timestamp,cpu_usage ,memory_percentage
     FROM system_data
     ORDER BY timestamp DESC
     LIMIT 30
@@ -176,7 +176,8 @@ def chart_data():
     return jsonify([
         {
             "timestamp": row["timestamp"],
-            "cpu_usage": row["cpu_usage"]
+            "cpu_usage": row["cpu_usage"],
+            "memory_usage": row["memory_percentage"],
         }
         for row in rows
     ])

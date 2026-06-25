@@ -224,7 +224,9 @@ No logs selected
 
         const labels = data.map(item => item.timestamp.slice(11, 19));
         const cpuData = data.map(item => item.cpu_usage);
-
+        console.log(`cpuData: ${cpuData}`)
+        const memoryData = data.map(item => item.memory_usage);
+        console.log(`memoryData: ${memoryData}`)
         const ctx = document.getElementById("cpuChart").getContext("2d");
 
         cpuChart = new Chart(ctx, {
@@ -238,7 +240,16 @@ No logs selected
                     backgroundColor: "rgba(75,192,192,0.2)",
                     fill: true,
                     tension: 0.4
-                }]
+                },
+                    {
+                        label: 'Memory Usage (%)',
+                        data: memoryData,
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
             },
             options: {
                 responsive: true,
@@ -253,6 +264,7 @@ No logs selected
 
         cpuChart.data.labels = data.map(item => item.timestamp.slice(11, 19));
         cpuChart.data.datasets[0].data = data.map(item => item.cpu_usage);
+        cpuChart.data.datasets[1].data = data.map(item => item.memory_usage);
         cpuChart.update();
     }
 
