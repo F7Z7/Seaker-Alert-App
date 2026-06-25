@@ -3,8 +3,14 @@ import time
 from backend.database import get_db_connection
 
 conn = get_db_connection()
+cursor=conn.cursor()
 
-data = conn.execute('SELECT * FROM thresholds').fetchall()
+data = cursor.execute('''
+    SELECT timestamp,cpu_usage ,memory_percentage
+    FROM system_data
+    ORDER BY timestamp DESC
+    LIMIT 30
+    ''').fetchall()
 
 # print("hey")
 
