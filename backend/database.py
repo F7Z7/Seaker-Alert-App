@@ -31,5 +31,23 @@ def init_db():
         uptime_hours REAL
     )''')
 
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS thresholds(
+        id INTEGER PRIMARY KEY,
+        cpu INTEGER,
+        memory INTEGER,
+        disk INTEGER
+    )
+    ''')
+
+    cursor.execute("SELECT COUNT(*) FROM thresholds")
+    count = cursor.fetchone()[0]
+
+    if count == 0:
+        cursor.execute("""
+        INSERT INTO thresholds(cpu,memory,disk)
+        VALUES(80,80,90)
+        """)
+
     conn.commit()
     conn.close()
