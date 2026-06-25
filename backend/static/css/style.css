@@ -66,6 +66,7 @@ header h1 {
     display: flex;
     gap: 1.5rem;
     align-items: center;
+    flex-wrap: wrap;          /* added: meta items wrap on narrow widths */
 }
 
 .meta-item {
@@ -108,12 +109,6 @@ header h1 {
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
     margin-bottom: 1rem;
-}
-
-@media (max-width: 640px) {
-    .grid { grid-template-columns: 1fr; }
-    .meta-item { align-items: flex-start; }
-    header { flex-direction: column; }
 }
 
 /* ── Cards ── */
@@ -250,6 +245,8 @@ header h1 {
     padding: 0.65rem 1rem;
     border-bottom: 0.5px solid var(--border);
     background: var(--surface);
+    flex-wrap: wrap;          /* added: log header wraps on narrow widths */
+    gap: 0.5rem;              /* added: gap when wrapped */
 }
 
 .log-title {
@@ -262,6 +259,7 @@ header h1 {
 
 .log-table-wrap {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* added: smooth scroll on iOS */
 }
 
 table {
@@ -454,32 +452,29 @@ tbody td:first-child {
     opacity: 0.9;
 }
 
-@media (max-width: 768px) {
-    .settings-section {
-        flex-direction: column;
-    }
-}
 #loading-screen {
     text-align: center;
     padding: 20px;
 }
+
 #loading-text {
     font-weight: bold;
-    /*position: fixed;*/
 }
+
 .loader {
-    width: 50px; /* Reduce size */
+    width: 50px;
     height: 50px;
     display: block;
     margin: 0 auto 8px;
 }
+
 .dots::after {
     content: "...";
     display: inline-block;
     overflow: hidden;
     vertical-align: bottom;
     width: 0;
-    animation:   loadingDots 1.5s infinite;
+    animation: loadingDots 1.5s infinite;
 }
 
 @keyframes loadingDots {
@@ -487,4 +482,62 @@ tbody td:first-child {
     33%  { width: 0.4em; }
     66%  { width: 0.8em; }
     100% { width: 1.2em; }
+}
+
+/* ── Responsive breakpoints ── */
+
+/* Tablet: 641px – 768px — 2-col grid, settings stack */
+@media (max-width: 768px) {
+    .settings-section {
+        flex-direction: column;
+    }
+
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mobile: ≤ 640px — single column everything */
+@media (max-width: 640px) {
+    body {
+        padding: 1.25rem 1rem;
+    }
+
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header-meta {
+        width: 100%;
+        justify-content: flex-start;
+        gap: 1rem;
+    }
+
+    .meta-item {
+        align-items: flex-start;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-value {
+        font-size: 1.75rem;
+    }
+
+    .legend {
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    .log-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #log-dropdown {
+        width: 100%;
+        justify-content: space-between;
+    }
 }
