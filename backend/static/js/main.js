@@ -92,8 +92,10 @@ No logs selected
         await latestData()
         setInterval(latestData, 1000)
     }
-
     start()
+    document.getElementsByClassName("refresh-btn")[0].addEventListener("click", ()=>{
+      latestData()
+    })
 
     function updateClock() {
         const now = new Date();
@@ -241,6 +243,8 @@ No logs selected
 
         alert("Thresholds saved successfully")
     }
+
+
 })
 
 // Returns 'green', 'yellow', or 'red' based on threshold
