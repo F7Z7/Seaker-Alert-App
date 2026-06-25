@@ -1,19 +1,24 @@
 import os
-
+from dotenv import load_dotenv
 import requests
 from telegram import Bot
 
-
+load_dotenv()
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
 
 def send_alert(message):
+    # print("hello")
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
 
-    requests.post(
+    response=requests.post(
         url,
         json={
             "chat_id": CHAT_ID,
-            "text": message
+            "text":message
         }
     )
+
+
+
+# send_alert("hello")

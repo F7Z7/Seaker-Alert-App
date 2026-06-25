@@ -8,14 +8,17 @@ last_alert = {
 }
 
 def check_thresholds(data):
+    # print("ivde")
     cpu_t, mem_t, disk_t = load_threshold()
 
     cpu = data["cpu"]["usage_percent"]
     mem = data["memory"]["percentage"]
     disk = data["disk"]["percentage"]
-
+    # print("hey1")
     if cpu > cpu_t:
+        # print("hey2")
         if not last_alert["cpu"]:
+            # print("hey3")
             send_alert(
                 f" CPU usage exceeded threshold\nCurrent: {cpu}%\nThreshold: {cpu_t}%"
             )
