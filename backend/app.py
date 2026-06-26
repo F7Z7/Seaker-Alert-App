@@ -1,6 +1,9 @@
+import csv
+import io
+import json
 import time
 
-from flask import Flask,jsonify,render_template,request
+from flask import Flask,jsonify,render_template,request,send_file
 
 from agent.collector import get_system_data
 from backend.alerts import check_thresholds
@@ -181,6 +184,69 @@ def chart_data():
         }
         for row in rows
     ])
+
+@app.route("/api/export",methods=["POST"])
+def export_data():
+    data=request.get_json()
+    count=data["count"]
+    export_type=data["type"]
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+    SELECT *
+    FROM system_data
+    ORDER BY timestamp DESC
+    LIMIT ?
+    ''',(count,))
+
+    rows = [dict(r) for r in cursor.fetchall()]
+    conn.close()
+
+    if export_type == "csv":
+        output = io.StringIO()
+
+        writer = csv.DictWriter(
+            output,
+            fieldnames=rows[0].keys()
+        )
+
+        writer.writeheader()
+        writer.writerows(rows)
+
+        mem = io.BytesIO()
+        mem.write(output.getvalue().encode())
+        mem.seek(0)
+
+        return send_file(
+            mem,
+            mimetype="text/csv",
+            as_attachment=True,
+            download_name="system_logs.csv"
+        )
+
+    elif export_type == "json":
+
+        mem = io.BytesIO()
+
+        mem.write(
+            json.dumps(
+                rows,
+                indent=4
+            ).encode("utf-8")
+        )
+
+        mem.seek(0)
+
+        return send_file(
+            mem,
+            mimetype="application/json",
+            as_attachment=True,
+            download_name="system_logs.json"
+        )
+
+    return jsonify({"error": "Invalid export type"}), 400
 
 
 

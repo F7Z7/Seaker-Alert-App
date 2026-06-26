@@ -271,6 +271,40 @@ No logs selected
     renderCpuChart();
     setInterval(updateCpuChart, 5000);
 
+    document.querySelector(".export-btn")
+        .addEventListener("click", exportLogs);
+
+    async function exportLogs() {
+
+        const count =
+            document.getElementById("logs").value;
+
+        const type =
+            document.getElementById("type").value;
+
+        const response = await fetch("/api/export", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                count: count,
+                type: type
+            })
+        });
+
+        const blob = await response.blob();
+
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `system_logs.${type}`;
+        a.click();
+
+        window.URL.revokeObjectURL(url);
+    }
+
 })
 
 // Returns 'green', 'yellow', or 'red' based on threshold
