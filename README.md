@@ -305,6 +305,8 @@ This ensures meaningful notifications without spam or redundancy.
 ![MAIN UI](assets/main_dashboard.png)
 - Historical dashboard and threshold section
 ![Historical dashboard and threshold section](assets/historical_dashboard_and_thresholds_section.png)
+- Sample Telegram Alert
+![Sample Telegram Alert](assets/tele_alert.png)
 ## Future Improvements
 
 - [ ] Introduce secure token-based user authentication and multi-user profile configurations.
