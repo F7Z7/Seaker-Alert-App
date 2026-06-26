@@ -188,7 +188,10 @@ A preconfigured multi-stage build setup maps dependencies container-side.
      --name system-monitor \
      seaker-alert-app
    ```
-
+3.  **Docker Hub Image**
+```bash
+https://hub.docker.com/r/<your-username>/seaker-alert-app
+```
 ---
 
 ## API Endpoints Documentation
