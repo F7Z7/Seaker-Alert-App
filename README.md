@@ -28,7 +28,7 @@ The system is fully containerized for easy deployment across environments.
 ## System Architecture
 
 
-## Architecture Overview
+### Architecture Overview
 
 ```text
        ┌────────────────────────────────────────┐
@@ -59,7 +59,7 @@ The system is fully containerized for easy deployment across environments.
 ```
 ## Block Diagram
 
-![Seaker Alert App Block Diagram](block_diagram.png)
+![Seaker Alert App Block Diagram](assets/block_diagram.png)
 ---
 
 ## Technical Stack
@@ -297,7 +297,11 @@ This ensures meaningful notifications without spam or redundancy.
   - Update limits directly from UI 
   - Changes apply instantly without restarting the server
 ---
-
+## Dashboard
+- Main UI
+![MAIN UI](assets/main_dashboard.png)
+- Historical dashboard and threshold section
+![Historical dashboard and threshold section](assets/historical_dashboard_and_thresholds_section.png)
 ## Future Improvements
 
 - [ ] Introduce secure token-based user authentication and multi-user profile configurations.
