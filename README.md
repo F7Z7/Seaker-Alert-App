@@ -372,7 +372,10 @@ This ensures meaningful notifications without spam or redundancy.
 
 ## Author
 
-Developed by **Farzan R S**.
+Developed by **Farzan R S**
+
+## Resume
+[View My Resume](/assets/farza_resume.pdf)
 
 ---
 ## License
