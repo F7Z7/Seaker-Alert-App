@@ -269,7 +269,61 @@ https://hub.docker.com/r/<your-username>/seaker-alert-app
     "disk": 92
   }
   ```
+### 5. Export Historical Monitoring Data
+- **Endpoint**: `/api/export`
+- **Method**: `POST`
+- **Description**: Exports historical monitoring records from the database in either CSV or JSON format for offline analysis and archival purposes.
+- **Payload Shape**:
+  ```json
+  {
+    "count": 25,
+    "type": "csv"
+  }
+  ```
 
+  or
+
+  ```json
+  {
+    "count": 25,
+    "type": "json"
+  }
+  ```
+
+
+- **Response (`200 OK`)**:
+    - For `csv`: Returns a downloadable file named `system_logs.csv`
+    - For `json`: Returns a downloadable file named `system_logs.json`
+
+- **Example Request**:
+  ```json
+  {
+    "count": 10,
+    "type": "csv"
+  }
+  ```
+
+- **Example JSON Export Output**:
+  ```json
+  [
+    {
+      "id": 142,
+      "timestamp": "2026-06-26T10:45:00.123456",
+      "cpu_usage": 14.5,
+      "cpu_cores": 8,
+      "cpu_threads": 16,
+      "memory_total_gb": 16.0,
+      "memory_available_gb": 8.58,
+      "memory_used_gb": 7.42,
+      "memory_percentage": 46.4,
+      "disk_total_gb": 512.0,
+      "disk_used_gb": 210.5,
+      "disk_free_gb": 301.5,
+      "disk_percentage": 41.1,
+      "uptime_hours": 24.5
+    }
+  ]
+  ```
 ---
 
 ## Alert System Explanation
