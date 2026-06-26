@@ -25,7 +25,7 @@ No logs selected
 
     async function latestData() {
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/latest');
+            const response = await fetch('api/latest');
 
             if (!response.ok) {
                 console.log("HTTP Error:", response.status);
@@ -142,7 +142,7 @@ No logs selected
 
     async function showRecentlogs(defaultCount = 10) {
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/history', {
+            const response = await fetch('api/history', {
                 method: "POST", headers: {
                     'Content-Type': 'application/json'
                 }, body: JSON.stringify({count: defaultCount})
@@ -183,7 +183,7 @@ No logs selected
     // showRecentlogs() no more needed
 
     async function setThresholds() {
-        const response = await fetch("http://127.0.0.1:5000/api/thresholds");
+        const response = await fetch("api/thresholds");
 
         const data = await response.json();
 
@@ -203,7 +203,7 @@ No logs selected
         const memoryThreshold = document.getElementById("memory-threshold").value;
         const diskThreshold = document.getElementById("disk-threshold").value;
 
-        const response = await fetch("http://127.0.0.1:5000/api/thresholds", {
+        const response = await fetch("api/thresholds", {
             method: "POST", headers: {
                 'Content-Type': 'application/json'
             }, body: JSON.stringify({
@@ -219,7 +219,7 @@ No logs selected
     let cpuChart;
 
     async function renderCpuChart() {
-        const response = await fetch("http://127.0.0.1:5000/api/chart-data");
+        const response = await fetch("api/chart-data");
         const data = await response.json();
 
         const labels = data.map(item => item.timestamp.slice(11, 19));
@@ -259,7 +259,7 @@ No logs selected
     }
 
     async function updateCpuChart() {
-        const response = await fetch("http://127.0.0.1:5000/api/chart-data");
+        const response = await fetch("api/chart-data");
         const data = await response.json();
 
         cpuChart.data.labels = data.map(item => item.timestamp.slice(11, 19));
