@@ -483,7 +483,58 @@ tbody td:first-child {
     66%  { width: 0.8em; }
     100% { width: 1.2em; }
 }
+.table-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
 
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.control-group label,
+.control-group span {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+}
+
+.control-group select {
+    padding: 6px 10px;
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg);
+    color: var(--text-primary);
+    font-size: 0.72rem;
+    font-family: var(--font);
+    cursor: pointer;
+    outline: none;
+}
+
+.control-group select:focus {
+    border-color: var(--text-muted);
+}
+
+.export-btn {
+    padding: 6px 12px;
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--text-primary);
+    font-size: 0.72rem;
+    font-family: var(--font);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.export-btn:hover {
+    background: var(--text-primary);
+    color: white;
+}
 /* ── Responsive breakpoints ── */
 
 /* Tablet: 641px – 768px — 2-col grid, settings stack */

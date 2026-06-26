@@ -26,7 +26,7 @@
             <span class="meta-label">Uptime</span>
             <span class="meta-value" id="uptime">—</span>
         </div>
-        <button class="refresh-btn" >refresh</button>
+        <button class="refresh-btn">refresh</button>
     </div>
 </header>
 
@@ -171,16 +171,37 @@
 <div class="log-section">
     <div class="log-header">
         <span class="log-title">Recent logs</span>
-        <div id="log-dropdown">
-            <label for="logs">Last</label>
-            <select id="logs" name="logs">
-                <option value="0">0</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-                <option value="25">25</option>
-            </select>
-            <span>entries</span>
+        <div class="table-controls">
+
+            <div class="control-group">
+                <label for="logs">Last</label>
+
+                <select id="logs">
+                    <option value="0">0</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="25">25</option>
+                </select>
+
+                <span>entries</span>
+            </div>
+
+            <div class="control-group">
+
+                <label for="type">Export</label>
+
+                <select id="type">
+                    <option value="csv">CSV</option>
+                    <option value="json">JSON</option>
+                </select>
+
+                <button class="export-btn">
+                    Export
+                </button>
+
+            </div>
+
         </div>
     </div>
     <div class="log-table-wrap">
