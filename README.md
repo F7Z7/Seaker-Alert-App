@@ -1,20 +1,32 @@
-# System Monitor & Alert App
+# Seaker Alert App
 
-A lightweight, full-stack real-time system monitoring and alerting application. The project tracks critical hardware metrics (CPU, Memory, Disk, and Uptime), stores them in a persistent SQLite database, visualizes current stats and historical trends via a sleek frontend dashboard, and dispatches instant Telegram notifications if customizable resource thresholds are exceeded.
+A lightweight real-time system monitoring and alerting platform that tracks CPU, memory, disk usage, and uptime, stores historical metrics in SQLite, visualizes system performance via a web dashboard, and sends instant Telegram alerts when configurable thresholds are exceeded.
+
+---
+
+## Overview
+
+Seaker Alert App is a full-stack monitoring solution designed for continuous system observability. It runs a background telemetry collector that captures system metrics in real time, persists them in a lightweight database, and exposes a REST API consumed by a responsive frontend dashboard. When system resources exceed defined limits, the backend automatically triggers Telegram notifications.
+
+The system is fully containerized for easy deployment across environments.
 
 ---
 
-## Features
+## Key Features
 
-- **Real-Time Dashboard**: Displays continuous live stats for CPU usage (cores/threads), Memory (total, used, available), and Disk space alongside dynamic progress bars.
-- **Historical Metrics Charting**: Integrated interactive line charts rendering historical data points for both CPU and Memory parameters.
-- **Configurable Thresholds**: Interactive panel allows operators to define custom limits for CPU, Memory, and Disk usage directly from the UI.
-- **Automated Telegram Alerts**: Back-end evaluation logic cross-references incoming metrics against thresholds, sending instant critical updates via the Telegram Bot API while filtering out duplicate repetitive alerts.
-- **Daemon Metrics Collector**: A continuous background worker utilizing `psutil` captures telemetry data independently at regular intervals without blocking the main web server thread.
-- **Persistent Time-Series Database**: SQLite database schema architecture automatically preserves historical captures and stores persistent application settings.
-- **Containerized Deployment**: Fully Dockerized wrapper allows seamless provisioning across diverse environments out of the box.
+- **Real-Time System Monitoring** – Live tracking of CPU, memory, disk usage, and system uptime
+- **Interactive Dashboard** – Clean UI with dynamic progress indicators and Chart.js-based visualizations
+- **Historical Data Tracking** – Time-series storage and retrieval using SQLite
+- **Custom Threshold Controls** – Configure CPU, memory, and disk limits directly from the UI
+- **Automated Telegram Alerts** – Instant notifications via Telegram Bot API on threshold breaches
+- **Background Daemon Collector** – Non-blocking telemetry collection using `psutil`
+- **REST API Backend** – Structured endpoints for system data, history, and configuration
+- **Docker Support** – Fully containerized for simple deployment
 
 ---
+
+## System Architecture
+
 
 ## Architecture Overview
 
@@ -45,7 +57,9 @@ A lightweight, full-stack real-time system monitoring and alerting application. 
 │ (Instant External Alert) │
 └──────────────────────────┘
 ```
+## Block Diagram
 
+![Seaker Alert App Block Diagram](block_diagram.png)
 ---
 
 ## Technical Stack
@@ -69,7 +83,7 @@ A lightweight, full-stack real-time system monitoring and alerting application. 
 
 1. **Clone the Repository**
    ```bash
-   git clone [https://github.com/yourusername/seaker-alert-app.git](https://github.com/yourusername/seaker-alert-app.git)
+   git clone https://github.com/yourusername/seaker-alert-app.git
    cd seaker-alert-app
    ```
 
@@ -195,22 +209,31 @@ A preconfigured multi-stage build setup maps dependencies container-side.
 
 ## Alert System Explanation
 
-The system maintains a dedicated daemon service checking telemetry markers dynamically every second against boundaries persisted inside the target SQLite space.  
-To prevent alerting noise, the back-end alert pipeline utilizes state tracking flags (`last_alert`):
+Seaker Alert App includes a lightweight alert engine that continuously evaluates system metrics against user-defined thresholds.
 
-- When a metric value surpasses a custom defined threshold, the engine validates if a notice has already been dispatched.
-- If `last_alert[metric]` is evaluated as `False`, an immediate formatting payload issues out cleanly through downstream network requests toward Telegram's API gateways.
-- The tracking state updates immediately to prevent repetitive messaging loops.
-- Once the resource profile drops back into acceptable operating levels, state configurations toggle off automatically.
+- A background daemon checks system stats at regular intervals
+- If a metric exceeds its threshold, an alert is triggered via Telegram Bot API
+- Duplicate alerts are prevented using internal state tracking (last_alert)
+- Alerts reset automatically once metrics return to safe levels
+
+
+This ensures meaningful notifications without spam or redundancy.
+
 
 ---
 
 ## Usage Instructions
 
-- **Dashboard Monitoring**: Open up the application interface inside your web browser. Progress indicators dynamically reflect threshold states using reactive color mapping rules (Green indicating healthy state, Yellow indicating Warning state, and Red highlighting Critical territory).
-- **Log Traversal**: Use the dropdown filter component within the logs table viewport area to load specific historical slices on demand.
-- **Threshold Alteration**: Key in structural modifications within the configurations module, then push the `Save Thresholds` button to dynamically update engine settings across the backend without restarting the system.
-
+- **Dashboard Monitoring**: 
+  - View real-time system metrics
+  - Monitor CPU, memory, and disk usage visually
+  - Track historical trends using interactive graphs
+- **Logs & Historyl**: 
+  - Query recent system snapshots
+  - Analyze performance trends over time
+- **Threshold Configuration**: 
+  - Update limits directly from UI 
+  - Changes apply instantly without restarting the server
 ---
 
 ## Future Improvements
@@ -225,4 +248,12 @@ To prevent alerting noise, the back-end alert pipeline utilizes state tracking f
 ## Author
 
 Developed by **Farzan R S**.
-```
+
+---
+## License
+
+This project is currently unlicensed. 
+
+---
+
+## Thank you for reading. Drop a star ⭐
